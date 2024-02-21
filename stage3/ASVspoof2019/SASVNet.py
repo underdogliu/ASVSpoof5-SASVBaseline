@@ -1,5 +1,6 @@
 #!/usr/bin/python
 #-*- coding: utf-8 -*-
+import os
 import sys
 import time
 import importlib
@@ -91,16 +92,17 @@ class ModelTrainer(object):
 
         return (loss/cnt, top1/cnt, lr)
 
-    def evaluateFromList(self, eval_list, eval_path, num_thread, eval_frames=0, num_eval=1, **kwargs):
+    def evaluateFromList(self, eval_list, enroll_path, eval_path, num_thread, eval_frames=0, num_eval=1, **kwargs):
 
         rank = 0
         self.__model__.eval()
 
         ## Enroll (speaker model) loader ##
         spk_meta = {}
-        meta_f = np.loadtxt('protocols/ASVspoof2019.LA.asv.eval.female.trn.txt', str)
-        meta_m = np.loadtxt('protocols/ASVspoof2019.LA.asv.eval.male.trn.txt', str)
-        meta = np.concatenate((meta_f, meta_m))
+        # meta_f = np.loadtxt('protocols/ASVspoof2019.LA.asv.eval.female.trn.txt', str)
+        # meta_m = np.loadtxt('protocols/ASVspoof2019.LA.asv.eval.male.trn.txt', str)
+        # meta = np.concatenate((meta_f, meta_m))
+        meta = np.loadtxt(os.path.dirname(eval_list) + "/p2_eval_asv_gi.trn", str)
         for i, spk in enumerate(meta[:,0]):
             spk_meta[spk] = meta[i][1].split(',')
         
@@ -110,7 +112,10 @@ class ModelTrainer(object):
             for file in spk_meta[spk]:
                 files += [file + '.flac']
 
-            test_dataset = test_dataset_loader(files, eval_path, eval_frames=eval_frames, num_eval=num_eval, **kwargs)
+                # We add extra step, in case the wav files are generated in WAV format, not FLAC
+                files += [file + '.wav']
+
+            test_dataset = test_dataset_loader(files, enroll_path, eval_frames=eval_frames, num_eval=num_eval, **kwargs)
             test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=num_thread, drop_last=False, sampler=None)
             ref_embeds = []
             for _, data in enumerate(test_loader):
