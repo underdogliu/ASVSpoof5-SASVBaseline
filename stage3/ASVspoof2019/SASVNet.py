@@ -115,7 +115,7 @@ class ModelTrainer(object):
                 # We add extra step, in case the wav files are generated in WAV format, not FLAC
                 #files += [file + '.wav']
 
-            test_dataset = test_dataset_loader(files, enroll_path, eval_frames=eval_frames, num_eval=num_eval, **kwargs)
+            test_dataset = test_dataset_loader(files, enroll_path, eval_path, eval_frames=eval_frames, num_eval=num_eval, **kwargs)
             test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=num_thread, drop_last=False, sampler=None)
             ref_embeds = []
             for _, data in enumerate(test_loader):
@@ -140,7 +140,7 @@ class ModelTrainer(object):
         setfiles = list(set(files))
         setfiles.sort()
 
-        test_dataset = test_dataset_loader(setfiles, eval_path, eval_frames=eval_frames, num_eval=num_eval, **kwargs)
+        test_dataset = test_dataset_loader(setfiles, enroll_path, eval_path, eval_frames=eval_frames, num_eval=num_eval, **kwargs)
         test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=num_thread, drop_last=False, sampler=None)
 
         ds = test_loader.__len__()
