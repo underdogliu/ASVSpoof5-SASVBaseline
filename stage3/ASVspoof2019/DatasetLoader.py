@@ -5,6 +5,7 @@ import glob
 import torch
 import random
 import itertools
+import librosa
 import soundfile
 import numpy as np
 # import torch.distributed as dist
@@ -24,7 +25,8 @@ def loadWAV(filename, max_frames, evalmode=True, num_eval=1):
     max_audio = max_frames * 160
     
     # Read wav file and convert to torch tensor
-    audio, sample_rate = soundfile.read(filename)
+    #audio, sample_rate = soundfile.read(filename)
+    audio, sample_rate = librosa.load(filename, sr=16000)
     audiosize = audio.shape[0]
     if audiosize <= max_audio:
         shortage = max_audio - audiosize + 1 

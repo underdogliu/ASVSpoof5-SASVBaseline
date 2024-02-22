@@ -21,15 +21,17 @@ if [ $stage -le -10 ]; then
         $spoof_wavdir \
         $src_protocol_dir \
         $protocol_dir
+
+    exit 0
 fi
 
 if [ $stage -le 0 ]; then
-    CUDA_VISIBLE_DEVICES=0 python trainSASVNet.py \
+    CUDA_VISIBLE_DEVICES=0 python3 trainSASVNet.py \
         --eval \
         --eval_frames 0 \
         --num_eval 1 \
         --eval_list $protocol_dir/p2_eval_asv_gi.trl \
-        --enroll_path $bonafide_wavdir/flac \
+        --enroll_path $bonafide_wavdir \
         --eval_path $spoof_wavdir/flac \
         --model SKA_TDNN \
         --initial_model ./models/ckpts/ska_tdnn.model

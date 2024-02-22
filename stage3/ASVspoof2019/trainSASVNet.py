@@ -1,4 +1,3 @@
-#!/usr/bin/python
 #-*- coding: utf-8 -*-
 import os
 import sys
@@ -118,11 +117,11 @@ def main_worker(args):
 
         ## Save scores
         if args.scoring == True:
-            np.save(f'{args.result_save_path}/predict_scores.npy', sc)
-            np.save(f'{args.result_save_path}/ground_truth.npy', lab)
+            np.save("{}/predict_scores.npy".format(args.result_save_path), sc)
+            np.save("{}/ground_truth.npy".format(args.result_save_path), lab)
 
         sasv_eer, sv_eer, spf_eer = get_all_EERs(sc, lab)
-        msg = f"SASV-EER {sasv_eer:2.4f}, SV-EER {sv_eer:2.4f}, SPF-EER {spf_eer:2.4f}"
+        msg = "SASV-EER {}, SV-EER {}, SPF-EER {}".format(sasv_eer, sv_eer, spf_eer)
         cur_time = time.strftime("%Y-%m-%d %H:%M:%S")
         print('\n', cur_time, msg)
         with open(args.result_save_path + "/metrics", "a") as f_res:

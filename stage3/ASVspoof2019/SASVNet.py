@@ -113,7 +113,7 @@ class ModelTrainer(object):
                 files += [file + '.flac']
 
                 # We add extra step, in case the wav files are generated in WAV format, not FLAC
-                files += [file + '.wav']
+                #files += [file + '.wav']
 
             test_dataset = test_dataset_loader(files, enroll_path, eval_frames=eval_frames, num_eval=num_eval, **kwargs)
             test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False, num_workers=num_thread, drop_last=False, sampler=None)
@@ -129,6 +129,7 @@ class ModelTrainer(object):
             if rank == 0:
                 sys.stdout.write("\r Enrollment bona-fide speaker model: {:s}, {:d} of {:d}      ".format(spk, idx1, len(spk_meta.keys())))
                 sys.stdout.flush()
+        
         print('')
 
         ## Test loader ##

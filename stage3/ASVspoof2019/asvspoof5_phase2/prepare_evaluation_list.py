@@ -34,6 +34,6 @@ if __name__ == "__main__":
             t.write("{} {} {} {}\n".format(spk, utt, spoof_decision, asv_decision))
 
     # try to ensure the flac (wav) files are there
-    flac_files = glob.glob(src_wav_folder + "/*.flac")
-    wav_files = glob.glob(src_wav_folder + "/*.wav")
+    flac_files = glob.glob(src_wav_folder + "/flac/*.flac")
+    wav_files = glob.glob(src_wav_folder + "/flac/*.wav")
     assert (flac_files != [] or wav_files != []), "empty wav directory for {}".format(src_wav_folder)
